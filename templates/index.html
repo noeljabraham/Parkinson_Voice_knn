@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>Parkinsons disease prediction</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="../static/css/style.css">
+
+</head>
+
+<body >
+ <div class="login">
+    <div class="heading-h1">
+        <font size="6">
+        <h1>Parkinsons Disease Detection</h1>
+    </div>
+    <div class="result">
+        <font size="7"> 
+	    <p><b>{{ prediction_text }}</b></p>
+    </div>
+
+    <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}" method="post">
+    	<input type="text" name="MDVP:Fo(Hz)" placeholder="MDVP:Fo(Hz) value(75-250)" required="required" />
+        <input type="text" name="MDVP:Fhi(Hz)" placeholder="MDVP:Fhi(Hz) value(250-550)" required="required" />
+		<input type="text" name="MDVP:Flo(Hz)" placeholder="MDVP:Flo(Hz) value(75-140)" required="required" />
+		<input type="text" name="MDVP:Jitter(%)" placeholder="MDVP:Jitter(%) value(0-1.5)" required="required" />
+		<input type="text" name="MDVP:Shimmer" placeholder="MDVP:Shimmer value(0-3.81)" required="required" />
+		<input type="text" name="NHR" placeholder="NHR value(0-0.2)" required="required" />
+		<input type="text" name="RPDE" placeholder="RPDE value(0-0.5)" required="required" />
+		<input type="text" name="DFA" placeholder="DFA value(0.5-1.2)" required="required" />
+		<input type="text" name="spread1" placeholder="spread1 value(0-0.35)" required="required" />
+		<input type="text" name="spread2" placeholder="spread2 value(0-0.45)" required="required" />
+		<input type="text" name="D2" placeholder="D2 value(1-3 apprx)" required="required" />
+		
+    
+    <button type="submit" class="btn btn-primary btn-block btn-large">Diagnose</button>
+    </form>
+    
+    <ul>
+        <li><b>MDVP:Fo(Hz)</b> - Average vocal fundamental frequency</li>
+        <li><b>MDVP:Fhi(Hz)</b> - Maximum vocal fundamental frequency</li>
+        <li><b>MDVP:Flo(Hz)</b> - Minimum vocal fundamental frequency</li>
+        <li><b>MDVP:Jitter(%)</b> - Several measures of variation in fundamental frequency</li>
+        <li><b>MDVP:Shimmer</b> - Several measures of variation in amplitude</li>
+        <li><b>NHR</b> - Two measures of ratio of noise to tonal components in the voice</li>
+        <li><b>RPDE, D2</b> - Two nonlinear dynamical complexity measures</li>
+        <li><b>DFA</b> - Signal fractal scaling exponent</li>
+        <li><b>spread1, spread2</b> - Three nonlinear measures of fundamental frequency variation</li>
+            </ul>
+    
+ </div>
+
+ <p id="recordingStatus"></p>
+
+    <!-- Add a button to start/stop recording -->
+    <button id="recordButton">Start Recording</button>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+
+                    mediaRecorder.ondataavailable = function (event) {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = function () {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        console.log('Recorded Audio Blob URL:', audioUrl);
+
+                        // Extract features from the recorded audio
+                        const extractedFeatures = extractFeaturesFromAudio(audioBlob);
+
+                        // Fill the input fields in the form with the extracted features
+                        document.querySelector("input[name='MDVP:Fo(Hz)']").value = extractedFeatures['MDVP:Fo(Hz)'];
+                        document.querySelector("input[name='MDVP:Jitter(%)']").value = extractedFeatures['MDVP:Jitter(%)'];
+                        // Fill other input fields with the extracted features
+
+                        document.getElementById('recordingStatus').innerText = 'Recording stopped.';
+                    };
+
+                    mediaRecorder.start();
+                    document.getElementById('recordingStatus').innerText = 'Recording...';
+                })
+                .catch(err => {
+                    console.error('Error accessing the microphone:', err);
+                });
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                audioChunks = [];
+            }
+        }
+
+        document.getElementById('recordButton').addEventListener('click', function () {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+                this.innerText = 'Start Recording';
+            } else {
+                startRecording();
+                this.innerText = 'Stop Recording';
+            }
+        });
+
+        // Function to extract features from the recorded audio
+        function extractFeaturesFromAudio(audioBlob) {
+            // Process the audio Blob and extract the required features
+            // This function should handle decoding the audio and extracting features
+            // Replace this with your logic to extract features from audio data
+            // Example: extract MDVP:Fo(Hz), MDVP:Jitter(%), etc.
+            return {
+                'MDVP:Fo(Hz)': 197.076,
+                'MDVP:Fhi(Hz)': 206.896,
+                'MDVP:Flo(Hz)':192.055,
+                'MDVP:Jitter(Hz)':192.055,
+                'MDVP:Shimmer(Hz)':192.055,
+        
+            };
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+*,
+body,
+html {
+  font-family: 'Open Sans', sans-serif !important; 
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background-color: #00b6a1;
+}
+
+/* Font family modification */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #00b6a1;
+}
+
+.login {
+  background-image: #00b6a1;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.login input {
+  display: inline-block;
+  margin: 1rem 1rem;
+}
+
+.heading-h1 {
+  display: inline-block;
+  margin: 0.5rem;
+  background-color:#00b6a1;
+  padding: 0.2rem 1rem;
+}
+
+h1 {
+  background-image: linear-gradient(to right, #511281, #4D4646);
+  display: inline-block;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+input {
+  /* Changing input font to Open Sans */
+  font-size: 1.5rem;
+  padding: 1rem 1rem;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-bottom: 3px solid transparent;
+  display: block;
+  width: 25%;
+  margin: 0 0.5rem;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.6);
+  border-bottom: 3px solid rgba(40, 180, 133, 0.7);
+}
+
+input:focus:invalid {
+  border-bottom: 3px solid #ff7730;
+}
+
+button {
+  display: block;
+  margin: 2rem auto;
+  border-radius: 20rem;
+  padding: 1rem 4rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family: 'Open Sans', sans-serif; /* Changing button font to Open Sans */
+  background-color: #FFC107;
+  border: none;
+  transition: all 0.2s;
+}
+
+button:hover {
+  transform: translateY(-0.3px);
+  box-shadow: 0 1.5rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+ul {
+  font-size: 25px;
+  padding: 5rem;
+  text-align: left;
+  word-spacing: 3px;
+  font-family: 'Open Sans', sans-serif; /* Changing ul font to Open Sans */
+}
+
+.result {
+  text-align: center;
+  padding: 1.5rem 1.5rem;
+  background-image: linear-gradient(to right, #511281, #4D4646);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Style for the recording button */
+#recordButton {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
