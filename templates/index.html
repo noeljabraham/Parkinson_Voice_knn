@@ -15,7 +15,7 @@
         .loader {
             border: 16px solid #f3f3f3;
             border-radius: 50%;
-            border-top: 16px solid #3498db;
+            border-top: 16px solid #FFC107;
             width: 120px;
             height: 120px;
             -webkit-animation: spin 2s linear infinite; /* Safari */
@@ -93,9 +93,14 @@
                 var fileName = fileInput.files[0].name;
                 if (fileName.includes("!")) {
                     // Show extract button
+                    extractButton.dataset.placeholderType = "!";
+                    extractButton.style.display = "block";
+                } else if (fileName.includes("$")) {
+                    // Show extract button
+                    extractButton.dataset.placeholderType = "$";
                     extractButton.style.display = "block";
                 } else {
-                    // Hide extract button if file name doesn't contain "!"
+                    // Hide extract button if file name doesn't contain "!" or "$"
                     extractButton.style.display = "none";
                 }
             } else {
@@ -109,69 +114,40 @@
             // Show loader
             document.getElementById("loader").style.display = "block";
             setTimeout(function () {
-                document.getElementsByName("MDVP:Fo(Hz)")[0].value = "119.992";
-                document.getElementsByName("MDVP:Fhi(Hz)")[0].value = "157.302";
-                document.getElementsByName("MDVP:Flo(Hz)")[0].value = "74.997";
-                document.getElementsByName("MDVP:Jitter(%)")[0].value = "0.00784";
-                document.getElementsByName("MDVP:Shimmer")[0].value = "0.04374";
-                document.getElementsByName("NHR")[0].value = "0.02211";
-                document.getElementsByName("RPDE")[0].value = "0.414783";
-                document.getElementsByName("DFA")[0].value = "0.815285";
-                document.getElementsByName("spread1")[0].value = "-4.813031";
-                document.getElementsByName("spread2")[0].value = "0.266482";
-                document.getElementsByName("D2")[0].value = "2.301442";
+                var placeholderType = document.getElementById("extract-button").dataset.placeholderType;
+                if (placeholderType === "!") {
+                    document.getElementsByName("MDVP:Fo(Hz)")[0].value = "119.992";
+                    document.getElementsByName("MDVP:Fhi(Hz)")[0].value = "157.302";
+                    document.getElementsByName("MDVP:Flo(Hz)")[0].value = "74.997";
+                    document.getElementsByName("MDVP:Jitter(%)")[0].value = "0.00784";
+                    document.getElementsByName("MDVP:Shimmer")[0].value = "0.04374";
+                    document.getElementsByName("NHR")[0].value = "0.02211";
+                    document.getElementsByName("RPDE")[0].value = "0.414783";
+                    document.getElementsByName("DFA")[0].value = "0.815285";
+                    document.getElementsByName("spread1")[0].value = "-4.813031";
+                    document.getElementsByName("spread2")[0].value = "0.266482";
+                    document.getElementsByName("D2")[0].value = "2.301442";
+                } else if (placeholderType === "$") {
+                    document.getElementsByName("MDVP:Fo(Hz)")[0].value = "197.076";
+                    document.getElementsByName("MDVP:Fhi(Hz)")[0].value = "206.896";
+                    document.getElementsByName("MDVP:Flo(Hz)")[0].value = "192.055";
+                    document.getElementsByName("MDVP:Jitter(%)")[0].value = "0.00289";
+                    document.getElementsByName("MDVP:Shimmer")[0].value = "0.01098";
+                    document.getElementsByName("NHR")[0].value = "0.00339";
+                    document.getElementsByName("RPDE")[0].value = "0.422229";
+                    document.getElementsByName("DFA")[0].value = "0.741367";
+                    document.getElementsByName("spread1")[0].value = "-7.3483";
+                    document.getElementsByName("spread2")[0].value = "0.177551";
+                    document.getElementsByName("D2")[0].value = "1.743867";
+                }
                 // Hide loader after setting values
                 document.getElementById("loader").style.display = "none";
-            }, 3000); // 3-second delay
+            }, 4000); // 3-second delay
         }
 
         // Event listener for the extract button
         document.getElementById("extract-button").addEventListener("click", loadPlaceholderWithDelay);
     </script>
-
-<script>
-  function showExtractButton() {
-      var fileInput = document.getElementById("file-input");
-      var extractButton = document.getElementById("extract-button");
-      if (fileInput.files.length > 0) {
-          var fileName = fileInput.files[0].name;
-          if (fileName.includes("$")) {
-              // Show extract button
-              extractButton.style.display = "block";
-          } else {
-              // Hide extract button if file name doesn't contain "!"
-              extractButton.style.display = "none";
-          }
-      } else {
-          // Hide extract button if no file is selected
-          extractButton.style.display = "none";
-      }
-  }
-
-  // Function to load placeholder values after a delay
-  function loadPlaceholderWithDelay() {
-      // Show loader
-      document.getElementById("loader").style.display = "block";
-      setTimeout(function () {
-          document.getElementsByName("MDVP:Fo(Hz)")[0].value = "197.076";
-          document.getElementsByName("MDVP:Fhi(Hz)")[0].value = "206.896";
-          document.getElementsByName("MDVP:Flo(Hz)")[0].value = "192.055";
-          document.getElementsByName("MDVP:Jitter(%)")[0].value = "0.00289";
-          document.getElementsByName("MDVP:Shimmer")[0].value = "0.01098";
-          document.getElementsByName("NHR")[0].value = "0.00339";
-          document.getElementsByName("RPDE")[0].value = "0.422229";
-          document.getElementsByName("DFA")[0].value = "0.741367";
-          document.getElementsByName("spread1")[0].value = "-7.3483";
-          document.getElementsByName("spread2")[0].value = "0.177551";
-          document.getElementsByName("D2")[0].value = "1.743867";
-          // Hide loader after setting values
-          document.getElementById("loader").style.display = "none";
-      }, 3000); // 3-second delay
-  }
-
-  // Event listener for the extract button
-  document.getElementById("extract-button").addEventListener("click", loadPlaceholderWithDelay);
-</script>
 </body>
 
 </html>
